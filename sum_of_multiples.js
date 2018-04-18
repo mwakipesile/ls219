@@ -25,14 +25,7 @@
       sum of the multiples of one or more numbers in a set from second input
         - The multiples must be < limit and each is a multiple of any number in a set
 
-      Ive been bitten more than a few times where I get stuck and after several futile attempt to solve nagging
-      problems, i end up having to scratch the entire solution because the approach is either not practical, or has
-      a seemingly unsolvable but. i usually reach that conclusion after one of the following;
-      1. unable to fix the broken part of the solution
-      2. solution is extremely ugly after going troug a series of ugly acks tat beget more ugly acks due to causing
-      unforeseeable bugs
-
-      Examples / Test cases
+Examples / Test cases
       
 
   sumOfMultiples(1) // returns 0
@@ -79,7 +72,8 @@
 
   Data Structure
 
-  Integer
+  Integers
+  
     - Loop through n while n >= 1, and n < limit
   Array
     - use Array.prototype.some() to find out if n is a multiple of at least one of the numbers in the set
