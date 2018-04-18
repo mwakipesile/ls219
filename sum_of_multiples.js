@@ -33,54 +33,49 @@
       unforeseeable bugs
 
       Examples / Test cases
-      Tese are the test cases tat are provided wit the problem. tey cover fairly nice range for valid inputs.
-      - limit number is less than all numbers in the set
-      .  using a given set 
-      . using default set, [3, 5] 
+      
 
-      and seem satisfactory. Terefore I did not add any of my own.
-
-sumOfMultiples(1) // returns 0
+  sumOfMultiples(1) // returns 0
 
 
-sumOfMultiples(4) // returns 3
+  sumOfMultiples(4) // returns 3
 
 
-sumOfMultiples(10) // returns 23
+  sumOfMultiples(10) // returns 23
 
-sumOfMultiples(100) // returns 2318
+  sumOfMultiples(100) // returns 2318
 
-sumOfMultiples(1000) // returns 233168
+  sumOfMultiples(1000) // returns 233168
 
-sumOfMultiples(20, [7, 13, 17]) // returns 51
+  sumOfMultiples(20, [7, 13, 17]) // returns 51
 
-sumOfMultiples(15, [4, 6]) // returns 30
+  sumOfMultiples(15, [4, 6]) // returns 30
 
-sumOfMultiples(150, [5, 6, 8]) // returns 4419
+  sumOfMultiples(150, [5, 6, 8]) // returns 4419
 
-sumOfMultiples(10000, [43, 47]) // returns 2203160
+  sumOfMultiples(10000, [43, 47]) // returns 2203160
 
-sumOfMultiples(20, []) // returns null
+  sumOfMultiples(20, []) // returns null
 
-sumOfMultiples(-20) // returns null
+  sumOfMultiples(-20) // returns null
 
-sumOfMultiples(20, [0]) // returns null
+  sumOfMultiples(20, [0]) // returns null
 
-sumOfMultiples(20, [7, 0, 13, 17]) // returns null
+  sumOfMultiples(20, [7, 0, 13, 17]) // returns null
 
-sumOfMultiples(20, [7, undefined, 13, 17]) // returns null
+  sumOfMultiples(20, [7, undefined, 13, 17]) // returns null
 
-sumOfMultiples(20, [7, null, 13, 17]) // returns null
+  sumOfMultiples(20, [7, null, 13, 17]) // returns null
 
-sumOfMultiples(20, [7, -13, 17]) // returns null
+  sumOfMultiples(20, [7, -13, 17]) // returns null
 
-sumOfMultiples(20, [7, Infinity, 17]) // returns null
+  sumOfMultiples(20, [7, Infinity, 17]) // returns null
 
-sumOfMultiples(Infinity, [7, 13, 17]) // returns null
+  sumOfMultiples(Infinity, [7, 13, 17]) // returns null
 
-sumOfMultiples(20, [7, [13], 17]) // returns null
+  sumOfMultiples(20, [7, [13], 17]) // returns null
 
-sumOfMultiples(20, [[7, 13]]) // returns null
+  sumOfMultiples(20, [[7, 13]]) // returns null
 
   Data Structure
 
