@@ -15,15 +15,21 @@
     Understanding the problem
     - Input; 
       1. natural number (limit)
-      2. Set(array) of numbers[optional]
+      2. Set(array) of factors[optional]
         - implicit requirement; contains natural numbers greater than zero
         - If second input (set of numbers) is not given, default to [3, 5]
 
       - Handling failure; return null if invalid input[number or set]
 
     - output
-      sum of the multiples of one or more numbers in a set from second input
-        - The multiples must be < limit and each is a multiple of any number in a set
+      sum of all multiples, up to limit - 1, that have at least one factor in a set from second input.
+      - implicit requirements
+      1. The multiples must be unique. In the example input shown in problem description, 
+      15 appears only once in the list of multiples of 3, and 5 between 1 to 20 - 1, 
+      despite being a multiple of both 3, and 5
+
+      2. Only positive integers (natural numbers greater than zero) are valid inputs. For example, integers < 0 
+      can be used neither as a limit, nor as one of the factors in a set
 
 Examples / Test cases
       
@@ -74,7 +80,7 @@ Examples / Test cases
 
   Integers
   
-    - Loop through n while n >= 1, and n < limit
+    - Loop through numbers n = 1 to n < limit
   Array
     - use Array.prototype.some() to find out if n is a multiple of at least one of the numbers in the set
 
@@ -89,27 +95,89 @@ ALGORITHM
     if (array.some(isFactor)) sum += n;
   }
 
+  ALGORITHM 2
+
+  factors.forEach(factor)
+    m = 2
+    multiple = factor
+
+    while multiple < limit {
+      multiples.push(multiple)
+      multiple = factor * m
+      m += 1
+    }
+
   */
+
 
 
 /*  CODE */
 
 function sumOfMultiples(limit, factors = [3, 5]) {
-  sum = 0;
-  var i;
-  
+  var multiple;
+  var multiples = [];
+
   var isInvalidNumber = num => !(Number.isInteger(num) && num > 0);
-  var isInvalidSet = array => !Array.isArray(array) ||
-                              array.some(isInvalidNumber) ||
-                              array.length === 0;
+  var isInvalidSet = array => !Array.isArray(array) || array.some(isInvalidNumber);
+
+  var sumOfMltpls = (sum, currentMultiple) => sum + currentMultiple;
   
+  // Return null for valid inputs
   if (isInvalidNumber(limit) || isInvalidSet(factors)) return null;
+  if (factors.length === 0)  factors = [3, 5];
+
+  factors.forEach(function(factor) {
+    multiple = factor;
+
+    while (multiple < limit) {
+      if (!multiples.includes(multiple)) multiples.push(multiple);
+      multiple += factor;
+    }
+
+  });
   
-  var isFactor = n => i % n === 0;
-  
-  for (i = 1; i < limit; i++) {
-    if (factors.some(isFactor)) sum += i;
-  }
-    
-  return sum;
+  return multiples.reduce(sumOfMltpls, 0);
+
 }
+
+console.log(sumOfMultiples(1)) // returns 0
+
+
+console.log(sumOfMultiples(4)) // returns 3
+
+
+console.log(sumOfMultiples(10)) // returns 23
+
+console.log(sumOfMultiples(100)) // returns 2318
+
+console.log(sumOfMultiples(1000)) // returns 233168
+
+console.log(sumOfMultiples(20, [7, 13, 17])) // returns 51
+
+console.log(sumOfMultiples(15, [4, 6])) // returns 30
+
+console.log(sumOfMultiples(150, [5, 6, 8])) // returns 4419
+
+console.log(sumOfMultiples(10000, [43, 47])) // returns 2203160
+
+console.log(sumOfMultiples(20, [])) // returns null
+
+console.log(sumOfMultiples(-20)) // returns null
+
+console.log(sumOfMultiples(20, [0])) // returns 78
+
+console.log(sumOfMultiples(20, [7, 0, 13, 17])) // returns null
+
+console.log(sumOfMultiples(20, [7, undefined, 13, 17])) // returns null
+
+console.log(sumOfMultiples(20, [7, null, 13, 17])) // returns null
+
+console.log(sumOfMultiples(20, [7, -13, 17])) // returns null
+
+console.log(sumOfMultiples(20, [7, Infinity, 17])) // returns null
+
+console.log(sumOfMultiples(Infinity, [7, 13, 17])) // returns null
+
+console.log(sumOfMultiples(20, [7, [13], 17])) // returns null
+
+console.log(sumOfMultiples(20, [[7, 13]])) // returns null
