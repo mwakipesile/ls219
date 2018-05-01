@@ -54,7 +54,7 @@ Examples / Test cases
 
   sumOfMultiples(10000, [43, 47]) // returns 2203160
 
-  sumOfMultiples(20, []) // returns null
+  sumOfMultiples(20, []) // returns 78
 
   sumOfMultiples(-20) // returns null
 
@@ -87,7 +87,7 @@ Examples / Test cases
 ALGORITHM
   declare variable sum, and initiate it to zero: sum = 0;
 
-  if (isInvalidLimit(limit) || isInvalidSet(factors) return null;
+  if (isInvalidLimit(limit) || validFactors(factors) return null;
 
   define function isFactor(num) that returns result of n % num === 0;
 
@@ -107,77 +107,60 @@ ALGORITHM
       m += 1
     }
 
-  */
+*/
 
-
-
-/*  CODE */
 
 function sumOfMultiples(limit, factors = [3, 5]) {
   var multiple;
   var multiples = [];
 
-  var isInvalidNumber = num => !(Number.isInteger(num) && num > 0);
-  var isInvalidSet = array => !Array.isArray(array) || array.some(isInvalidNumber);
+  var isValidInt = num => Number.isInteger(num) && num > 0;
+  var validFactors = array => Array.isArray(array) && array.every(isValidInt);
 
-  var sumOfMltpls = (sum, currentMultiple) => sum + currentMultiple;
-  
-  // Return null for valid inputs
-  if (isInvalidNumber(limit) || isInvalidSet(factors)) return null;
-  if (factors.length === 0)  factors = [3, 5];
-
-  factors.forEach(function(factor) {
+  var collectFactorsUniqueMultiples = function(factor) {
     multiple = factor;
 
     while (multiple < limit) {
       if (!multiples.includes(multiple)) multiples.push(multiple);
       multiple += factor;
     }
+  };
 
-  });
+  var sumMultiples = (sum, currentMultiple) => sum + currentMultiple;
   
-  return multiples.reduce(sumOfMltpls, 0);
+  // Validate inputs. Return null for invalid inputs
+  if (!isValidInt(limit) || !validFactors(factors) || factors.length === 0) return null;
 
+  factors.forEach(collectFactorsUniqueMultiples);
+  
+  return multiples.reduce(sumMultiples, 0);
 }
 
-console.log(sumOfMultiples(1)) // returns 0
-
-
-console.log(sumOfMultiples(4)) // returns 3
-
-
-console.log(sumOfMultiples(10)) // returns 23
-
-console.log(sumOfMultiples(100)) // returns 2318
-
-console.log(sumOfMultiples(1000)) // returns 233168
-
-console.log(sumOfMultiples(20, [7, 13, 17])) // returns 51
-
-console.log(sumOfMultiples(15, [4, 6])) // returns 30
-
-console.log(sumOfMultiples(150, [5, 6, 8])) // returns 4419
-
-console.log(sumOfMultiples(10000, [43, 47])) // returns 2203160
-
-console.log(sumOfMultiples(20, [])) // returns null
-
-console.log(sumOfMultiples(-20)) // returns null
-
-console.log(sumOfMultiples(20, [0])) // returns 78
-
-console.log(sumOfMultiples(20, [7, 0, 13, 17])) // returns null
-
-console.log(sumOfMultiples(20, [7, undefined, 13, 17])) // returns null
-
-console.log(sumOfMultiples(20, [7, null, 13, 17])) // returns null
-
-console.log(sumOfMultiples(20, [7, -13, 17])) // returns null
-
-console.log(sumOfMultiples(20, [7, Infinity, 17])) // returns null
-
-console.log(sumOfMultiples(Infinity, [7, 13, 17])) // returns null
-
-console.log(sumOfMultiples(20, [7, [13], 17])) // returns null
-
-console.log(sumOfMultiples(20, [[7, 13]])) // returns null
+// Second argument's omitted, default to factors [3, 5]
+console.log(sumOfMultiples(10)); // returns 23
+console.log(sumOfMultiples(100)); // returns 2318
+console.log(sumOfMultiples(1000)); // returns 233168
+// Limit is smaller than all factors (3, 5)
+console.log(sumOfMultiples(1)); // returns 0
+// Limit is smaller than some factor(s)
+console.log(sumOfMultiples(4)); // returns 3
+// Limit is equal to the factor
+console.log(sumOfMultiples(20, [20])); // returns 0
+// Second argument's an empty array; default to factors [3, 5]
+console.log(sumOfMultiples(20, [])); // returns 78
+// Second argument(factors) is given
+console.log(sumOfMultiples(20, [7, 13, 17])); // returns 51
+console.log(sumOfMultiples(15, [4, 6])); // returns 30
+console.log(sumOfMultiples(150, [5, 6, 8])); // returns 4419
+console.log(sumOfMultiples(10000, [43, 47])); // returns 2203160
+// Bad inputs
+console.log(sumOfMultiples(20, [0])); // returns null
+console.log(sumOfMultiples('20')); // returns null
+console.log(sumOfMultiples(20, [7, 0, 13, 17])); // returns null
+console.log(sumOfMultiples(20, [7, undefined, 13, 17])); // returns null
+console.log(sumOfMultiples(20, [7, null, 13, 17])); // returns null
+console.log(sumOfMultiples(20, [7, -13, 17])); // returns null
+console.log(sumOfMultiples(20, [7, Infinity, 17])); // returns null
+console.log(sumOfMultiples(Infinity, [7, 13, 17])); // returns null
+console.log(sumOfMultiples(20, [7, [13], 17])); // returns null
+console.log(sumOfMultiples(20, [[7, 13]])); // returns null
