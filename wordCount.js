@@ -25,10 +25,10 @@ DATA STRUCTURE
 - Object: need to store property, i.e word count
 
 ALGORITHM
-- create object literal to store word count word_count = {};
+- create object literal to store word count wordsCount = {};
 - string.match(regex) or string.split(regex delimiters) into an array of words
 - array = array.map(normalizeCase)
-- array.forEach(word) increment word_count[word] by (or initiate to) 1;
+- array.forEach(word) increment wordsCount[word] by (or initiate to) 1;
 
 */
 
@@ -37,9 +37,9 @@ function wordCount(str) {
   
   var words = str.toLowerCase().match(/(\w+(?<!'\w+)'\w+|\w+)/g);
 
-  var incrementWordCount = (word_count, word) => { 
-     word_count[word] = 1 + (word_count[word] | 0)
-     return word_count;
+  var incrementWordCount = (wordsCount, word) => { 
+     wordsCount[word] = 1 + (wordsCount[word] | 0)
+     return wordsCount;
   };
 
   return words.reduce(incrementWordCount, {});
