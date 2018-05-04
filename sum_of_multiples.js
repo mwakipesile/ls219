@@ -126,7 +126,7 @@ function sumOfMultiples(limit, factors = [3, 5]) {
     }
   };
 
-  var sumMultiples = (sum, currentMultiple) => sum + currentMultiple;
+  var sumMultiples = (sum, current_multiple) => sum + current_multiple;
   
   // Validate inputs. Return null for invalid inputs
   if (!isValidInt(limit) || !validFactors(factors) || factors.length === 0) return null;
