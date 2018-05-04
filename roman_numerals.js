@@ -1,3 +1,4 @@
+// Roman numerals
 
 /*
 
@@ -49,7 +50,7 @@ input
     - start with left most digit
     - skip any digit with value zero
 
-    - for digits between 1 to 3
+    - if digits between 1 and 3
 
       - if it's in 1000s place, its roman equivalent is digit times 'M'
         - i.e 2 = MM, 1 = M, 3 = MMM
@@ -63,7 +64,7 @@ input
       - if it's in 1s place it's Roman equivalent is digit times 'X'
         e.g 1 = 'I'
 
-    - for digits 4, and 9, their Roman equivalent are:
+    - if a digit is 4, or 9, their Roman equivalent are:
       - Roman 1 in digit's place value prepended to (digit + 1) in digit's place value
         //prepended to Roman (digit + 1) % 10 in place value * 10^((digit + 1) / 10)
 
@@ -88,7 +89,7 @@ input
             1 in tens = X, and (9 + 1) in tens = 1 in 100s = C
             90 = X prepended to C = IX
 
-    - for digits between 6 and 8, their Roman equivalent 
+    - if digit is between 6 and 8, their Roman equivalent 
       Roman 5 prepended to Roman (digit - 5) in digits place value
 
       - example
@@ -100,43 +101,83 @@ input
 output
   - Roman numerals
 
+*/
 
+/* Examples 
+
+The following examples were given with the problem as a test suite
 */
 
 
-console.log(toRoman(1); // returns 'I' 
+console.log(toRoman(1)); // returns 'I' 
 
-console.log(toRoman(2); // returns 'II' 
+console.log(toRoman(2)); // returns 'II' 
 
-console.log(toRoman(3); // returns 'III' 
+console.log(toRoman(3)); // returns 'III' 
 
-console.log(toRoman(4); // returns 'IV' 
+console.log(toRoman(4)); // returns 'IV' 
 
-console.log(toRoman(5); // returns 'V'
+console.log(toRoman(5)); // returns 'V'
 
-console.log(toRoman(6); // returns 'VI' 
+console.log(toRoman(6)); // returns 'VI' 
 
-console.log(toRoman(9); // returns 'IX'
+console.log(toRoman(9)); // returns 'IX'
 
-console.log(toRoman(27); // returns 'XXVII' 
+console.log(toRoman(27)); // returns 'XXVII' 
 
-console.log(toRoman(48); // returns 'XLVIII'
+console.log(toRoman(48)); // returns 'XLVIII'
 
-console.log(toRoman(59); // returns 'LIX'
+console.log(toRoman(59)); // returns 'LIX'
 
-console.log(toRoman(93); // returns 'XCIII'
+console.log(toRoman(93)); // returns 'XCIII'
 
-console.log(toRoman(141); // returns 'CXLI'
+console.log(toRoman(141)); // returns 'CXLI'
 
-console.log(toRoman(163); // returns 'CLXIII'
+console.log(toRoman(163)); // returns 'CLXIII'
 
-console.log(toRoman(402); // returns 'CDII'
+console.log(toRoman(402)); // returns 'CDII'
 
-console.log(toRoman(575); // returns 'DLXXV'
+console.log(toRoman(575)); // returns 'DLXXV'
 
-console.log(toRoman(911); // returns 'CMXI'
+console.log(toRoman(911)); // returns 'CMXI'
 
-console.log(toRoman(1024); // returns 'MXXIV'
+console.log(toRoman(1024)); // returns 'MXXIV'
 
-console.log(toRoman(3000); // returns 'MMM'
+console.log(toRoman(3000)); // returns 'MMM'
+
+/* I added the following examples to test overflow, according to this program (numbers above 3000), and  bad input handling */
+
+/* 
+DATA STRUCTURE 
+- Array. Turn input number into array of digits or digit characters 
+  - index (position) matters (determines place value)
+  - iteration: find value of each character(digit) individually based on position
+
+    OR 
+    - Integer
+    - using modulo/reminder operator to get digit & place value within while loop
+
+- hash/object
+  - look up table to associate a digits+place values with their Roman numerals equivalent
+
+I will likely be skipping the mental model part because I prefer to think out and explain why I've chosen data structure I choose, which not only helps me to see the folly of my choices sometimes, but also doubly serve as my mental model
+
+
+ALGORITHM
+digits = number.toString().split('');
+size = digits.length
+digits.map(digit, idx) => to_roman_num()
+  to_roman_num(digit) 
+    digit = digit.toInt()
+    if digit < 4
+      return rom_num[10^(size - (idx - 1)]].repeat(digit)
+    elsif digit = 4
+      rom = rom_num[10^(size - (idx - 1)]] + rom_num[digit + 1 * position]
+    elsif digit = 9
+      rom = rom_num[10^(size - (idx - 1)]] + rom_num[10^(position + 1)]
+    else 
+      rom = rom_num[5 * 10^(size - (idx - 1)]] + rom_num[10^(size - (idx - 1)]].repeat(digit)
+digits.join('');
+*/
+
 
