@@ -35,7 +35,7 @@ ALGORITHM
 function wordCount(str) {
   if (typeof str !== 'string' || !/\w+/.test(str)) return 'Error: bad input';
   
-  var words = str.match(/(\w+(?<!'\w+)'\w+|\w+)/g);
+  var words = str.toLowerCase().match(/(\w+(?<!'\w+)'\w+|\w+)/g);
 
   var incrementWordCount = (word_count, word) => { 
      word_count[word] = 1 + (word_count[word] | 0)
