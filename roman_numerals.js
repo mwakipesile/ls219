@@ -106,8 +106,111 @@ output
 /* Examples 
 
 The following examples were given with the problem as a test suite
+*
+/////////////////////////////
+
+/* I added the following examples to test overflow, according to this program (numbers above 3000), and  bad input handling */
+
+/* 
+DATA STRUCTURE 
+I needed to extract one digit at a time, which can be achieved by either using remainder operator(%) within a while loop, or I can convert the input number into an array of digit characters and use Array's built in iterators like map. I chose the latter for it'd lead to a more readable code, easy to follow code.
+
+- Array. Turn input number into array of digits or digit characters 
+  - index (position) matters (determines place value)
+  - iteration: find value of each character(digit) individually based on position
+
+    OR 
+    - Integer
+    - using modulo/reminder operator to get digit & place value within while loop
+
+- hash/object
+  - look up table to associate a digits+place values with their Roman numerals equivalent
+
+I will likely be skipping the mental model part because I prefer to think out and explain why I've chosen data structure I choose, which not only helps me to see the folly of my choices sometimes, but also doubly serve as my mental model
+
+
+ALGORITHM
+digits = number.toString().split('');
+size = digits.length
+digits.map(digit, idx) => to_roman_num()
+  to_roman_num(digit) 
+    digit = digit.toInt()
+    if digit < 4
+      return rom_num[10^(size - (idx - 1)]].repeat(digit)
+    elsif digit = 4
+      rom = rom_num[10^(size - (idx - 1)]] + rom_num[digit + 1 * position]
+    elsif digit = 9
+      rom = rom_num[10^(size - (idx - 1)]] + rom_num[10^(position + 1)]
+    else 
+      rom = rom_num[5 * 10^(size - (idx - 1)]] + rom_num[10^(size - (idx - 1)]].repeat(digit)
+digits.join('');
 */
 
+/* Code */
+
+/*
+ var digit;
+  var idx = 0;
+  var rom_num = '';
+
+  while (number > 0) {
+    digit = number % 10;
+    number = parseInt(number / 10);
+    console.log(number);
+
+    rom_num = toRomNum(digit, 10**idx) + rom_num;
+    idx += 1;
+  }
+
+  function toRomNum(digit, place_value) {
+    if (digit === 0) {
+      return ''
+    } else if (digit < 4) {
+      return romanDictionary[place_value.toString()].repeat(digit);
+    } else if (digit === 4 || digit === 9) {
+      return romanDictionary[place_value.toString()] + romanDictionary[((digit + 1) *  place_value).toString()];;
+    } else {
+      return romanDictionary[(5 *place_value).toString()] + romanDictionary[place_value.toString()].repeat(digit - 5);;
+    }
+  }
+*/
+
+
+var romanDictionary = { '1': 'I', '5': 'V', '10': 'X', '50': 'L', '100': 'C', '500': 'D', '1000': 'M' };
+
+
+function toRoman(num) {
+  if (!validInput(num)) return 'Invalid input';
+
+  var digits = num.toString().split('');
+  var last_idx = digits.length - 1;
+
+  function validInput(num) {
+    var digits = num => num.split('').every(chr => chr >= '0' && chr <= '9');
+
+    if (typeof num === 'string') return digits(num) && Number(num) <= 3000;
+
+    if (Number.isInteger(num)) return num > 0 && num <= 3000;
+  }
+
+  function digitToRomanNumeral(digit, idx) {
+    var place_val = 10 **(last_idx - idx);
+    var roman = num => romanDictionary[num.toString()];
+    digit = Number(digit);
+
+    if (digit === 0) {
+      return ''
+    } else if (digit < 4) {
+      return roman(place_val).repeat(digit);
+    } else if (digit === 4 || digit === 9) {
+      return roman(place_val) + roman((digit + 1) *  place_val);
+    } else {
+      return roman(5 * place_val) + roman(place_val).repeat(digit - 5);
+    }
+  }
+  
+  return digits.map(digitToRomanNumeral).join('');
+}
 
 console.log(toRoman(1)); // returns 'I' 
 
@@ -145,39 +248,16 @@ console.log(toRoman(1024)); // returns 'MXXIV'
 
 console.log(toRoman(3000)); // returns 'MMM'
 
-/* I added the following examples to test overflow, according to this program (numbers above 3000), and  bad input handling */
+console.log(toRoman(3001)); // returns 'MMM'
 
-/* 
-DATA STRUCTURE 
-- Array. Turn input number into array of digits or digit characters 
-  - index (position) matters (determines place value)
-  - iteration: find value of each character(digit) individually based on position
+console.log(toRoman(0)); // returns 'MMM'
 
-    OR 
-    - Integer
-    - using modulo/reminder operator to get digit & place value within while loop
+console.log(toRoman('3000')); // returns 'MMM'
 
-- hash/object
-  - look up table to associate a digits+place values with their Roman numerals equivalent
+console.log(toRoman(-1)); // returns 'MMM'
 
-I will likely be skipping the mental model part because I prefer to think out and explain why I've chosen data structure I choose, which not only helps me to see the folly of my choices sometimes, but also doubly serve as my mental model
+console.log(toRoman('1a4')); // returns 'MMM'
 
+console.log(toRoman('2089'));
 
-ALGORITHM
-digits = number.toString().split('');
-size = digits.length
-digits.map(digit, idx) => to_roman_num()
-  to_roman_num(digit) 
-    digit = digit.toInt()
-    if digit < 4
-      return rom_num[10^(size - (idx - 1)]].repeat(digit)
-    elsif digit = 4
-      rom = rom_num[10^(size - (idx - 1)]] + rom_num[digit + 1 * position]
-    elsif digit = 9
-      rom = rom_num[10^(size - (idx - 1)]] + rom_num[10^(position + 1)]
-    else 
-      rom = rom_num[5 * 10^(size - (idx - 1)]] + rom_num[10^(size - (idx - 1)]].repeat(digit)
-digits.join('');
-*/
-
-
+console.log(toRoman([208]));
