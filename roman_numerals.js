@@ -176,40 +176,48 @@ digits.join('');
 */
 
 
-var romanDictionary = { '1': 'I', '5': 'V', '10': 'X', '50': 'L', '100': 'C', '500': 'D', '1000': 'M' };
-
+const RomanDictionary = {
+  '1': 'I',
+  '5': 'V',
+  '10': 'X',
+  '50': 'L',
+  '100': 'C',
+  '500': 'D',
+  '1000': 'M',
+};
 
 function toRoman(num) {
-  if (!validInput(num)) return 'Invalid input';
+  var digits;
 
-  var digits = num.toString().split('');
-  var last_idx = digits.length - 1;
+  if (!validInput(num)) return 'Invalid input';
+  
+  digits = num.toString().split('');
 
   function validInput(num) {
     var digits = num => num.split('').every(chr => chr >= '0' && chr <= '9');
 
-    if (typeof num === 'string') return digits(num) && Number(num) <= 3000;
-
+    if (typeof num === 'string' && digits(num)) num = Number(num);
     if (Number.isInteger(num)) return num > 0 && num <= 3000;
+    return false;
   }
 
-  function digitToRomanNumeral(digit, idx) {
+  function toRomanNumeral(digit, idx) {
+    var last_idx = digits.length - 1;
     var place_val = 10 **(last_idx - idx);
-    var roman = num => romanDictionary[num.toString()];
+    var digitToRom = num => RomanDictionary[num.toString()];
     digit = Number(digit);
 
-    if (digit === 0) {
-      return ''
-    } else if (digit < 4) {
-      return roman(place_val).repeat(digit);
-    } else if (digit === 4 || digit === 9) {
-      return roman(place_val) + roman((digit + 1) *  place_val);
-    } else {
-      return roman(5 * place_val) + roman(place_val).repeat(digit - 5);
+    if (digit === 0) return '';
+    if (digit < 4) return digitToRom(place_val).repeat(digit);
+    if (digit === 4 || digit === 9) {
+      return digitToRom(place_val) + digitToRom((digit + 1) *  place_val);
     }
+
+    // Default: for digits 6 to 8
+    return digitToRom(5 * place_val) + digitToRom(place_val).repeat(digit - 5);
   }
   
-  return digits.map(digitToRomanNumeral).join('');
+  return digits.map(toRomanNumeral).join('');
 }
 
 console.log(toRoman(1)); // returns 'I' 
