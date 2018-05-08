@@ -61,7 +61,7 @@ input
       - if it's in 10s place it's Roman equivalent is digit times 'X'
         e.g 3 = 'XXX'
       
-      - if it's in 1s place it's Roman equivalent is digit times 'X'
+      - if it's in 1s place it's Roman equivalent is digit times 'I'
         e.g 1 = 'I'
 
     - if a digit is 4, or 9, their Roman equivalent are:
@@ -130,20 +130,29 @@ I will likely be skipping the mental model part because I prefer to think out an
 
 
 ALGORITHM
-digits = number.toString().split('');
-size = digits.length
-digits.map(digit, idx) => to_roman_num()
-  to_roman_num(digit) 
-    digit = digit.toInt()
-    if digit < 4
-      return rom_num[10^(size - (idx - 1)]].repeat(digit)
-    elsif digit = 4
-      rom = rom_num[10^(size - (idx - 1)]] + rom_num[digit + 1 * position]
-    elsif digit = 9
-      rom = rom_num[10^(size - (idx - 1)]] + rom_num[10^(position + 1)]
-    else 
-      rom = rom_num[5 * 10^(size - (idx - 1)]] + rom_num[10^(size - (idx - 1)]].repeat(digit)
-digits.join('');
+- create dictionary to translate numbers to Roman symbols
+    RomanDictionary = {'1': 'I', '5': 'V', '10': 'X'..... '1000': M }
+
+- convert input number to string, split it to array of chars, digits
+
+- map digits toRomanNum(), then join them and return resulting string
+  
+  - toRomNum(digit, idx) 
+      place_value = last_idx - idx
+      
+      if digit < 4
+        return toRomanSymbol(place_value) times digit
+      
+      if digit = 4 or 9
+        return toRomanSymbol(place_value) + 
+               toRomanSymbol((digit + 1) * place_value)
+      if digit >= 6 and <= 8
+        return toRomanSymbol(5 * place_value) +
+               toRomanSymbol(place_value) times (digit - 5)
+
+      - toRomanSymbol(integer)
+          convert integer to string of integer, integer_string
+          return RomanDictionary[integer_string]
 */
 
 /* Code */
@@ -188,10 +197,12 @@ const RomanDictionary = {
 
 function toRoman(num) {
   var digits;
+  var last_idx
 
   if (!validInput(num)) return 'Invalid input';
   
   digits = num.toString().split('');
+  last_idx = digits.length - 1;
 
   function validInput(num) {
     var digits = num => num.split('').every(chr => chr >= '0' && chr <= '9');
@@ -202,19 +213,19 @@ function toRoman(num) {
   }
 
   function toRomanNumeral(digit, idx) {
-    var last_idx = digits.length - 1;
     var place_val = 10 **(last_idx - idx);
-    var digitToRom = num => RomanDictionary[num.toString()];
+    var toRomanSym = num => RomanDictionary[num.toString()];
+
     digit = Number(digit);
 
     if (digit === 0) return '';
-    if (digit < 4) return digitToRom(place_val).repeat(digit);
+    if (digit < 4) return toRomanSym(place_val).repeat(digit);
     if (digit === 4 || digit === 9) {
-      return digitToRom(place_val) + digitToRom((digit + 1) *  place_val);
+      return toRomanSym(place_val) + toRomanSym((digit + 1) *  place_val);
     }
 
     // Default: for digits 6 to 8
-    return digitToRom(5 * place_val) + digitToRom(place_val).repeat(digit - 5);
+    return toRomanSym(5 * place_val) + toRomanSym(place_val).repeat(digit - 5);
   }
   
   return digits.map(toRomanNumeral).join('');
@@ -256,16 +267,38 @@ console.log(toRoman(1024)); // returns 'MXXIV'
 
 console.log(toRoman(3000)); // returns 'MMM'
 
-console.log(toRoman(3001)); // returns 'MMM'
 
-console.log(toRoman(0)); // returns 'MMM'
+
+console.log(toRoman('163')); // returns 'CLXIII'
+
+console.log(toRoman('402')); // returns 'CDII'
+
+console.log(toRoman('575')); // returns 'DLXXV'
+
+console.log(toRoman('911')); // returns 'CMXI'
+
+console.log(toRoman('1024')); // returns 'MXXIV'
 
 console.log(toRoman('3000')); // returns 'MMM'
 
-console.log(toRoman(-1)); // returns 'MMM'
 
-console.log(toRoman('1a4')); // returns 'MMM'
+console.log(toRoman(3001)); // returns 'Invalid input'
 
-console.log(toRoman('2089'));
+console.log(toRoman(0)); // returns 'Invalid input'
 
-console.log(toRoman([208]));
+console.log(toRoman(00)); // returns 'Invalid input'
+
+console.log(toRoman(-1)); // returns 'Invalid input'
+
+console.log(toRoman('1a4')); // returns 'Invalid input'
+
+console.log(toRoman([208])); // returns 'Invalid input'
+
+console.log(toRoman('0')); // returns 'Invalid input'
+
+console.log(toRoman('0000')); // returns 'Invalid input'
+
+console.log(toRoman('1,000')); // returns 'Invalid input'
+
+console.log(toRoman('2 9')); // returns 'Invalid input'
+
