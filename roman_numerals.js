@@ -27,89 +27,64 @@ To see this in practice, consider the example of 1990. In Roman numerals 1990 is
 
 Understanding the Problem
 input
-  - a number in Arabic numerals, to be converted to its Roman numerals equivalent
-  - program should be able to convert up to 3000
-
+  - an integer or string of integer between 1 and 3000 inclusive
+    - convert valid inputs to their Roman numerals equivalent
   - implicit knowledge
-    - Arabic numbers up to 1000 and their corresponding Roman numerals equivalent
+    - Numbers up to 1000 and their Roman numerals equivalent
       1 = I
-
       5 = V
-
       10 = X
-
       50 = L
-
-      100 = C
-
-      500 = D
-
-      1000 = M
-
-  - Arabic to Roman numerals conversion rules
+     100 = C
+     500 = D
+    1000 = M
+  - Hindu-Arabic to Roman numerals conversion rules
     - start with left most digit
     - skip any digit with value zero
-
-    - if digits between 1 and 3
-
-      - if it's in 1000s place, its roman equivalent is digit times 'M'
-        - i.e 2 = MM, 1 = M, 3 = MMM
-
-      - if it's in 100s place it's Roman equivalent is digit times 'C'
-        e.g 2 = CC
-      
-      - if it's in 10s place it's Roman equivalent is digit times 'X'
-        e.g 3 = 'XXX'
-      
-      - if it's in 1s place it's Roman equivalent is digit times 'I'
-        e.g 1 = 'I'
-
-    - if a digit is 4, or 9, their Roman equivalent are:
-      - Roman 1 in digit's place value prepended to (digit + 1) in digit's place value
-        //prepended to Roman (digit + 1) % 10 in place value * 10^((digit + 1) / 10)
-
-        - examples
-          4 
-            is in ones place 
-            1 in ones = I and  (4 + 1) in ones = V
-            4 = I prepended to V = IV 
+    - for a digit between 1 and 3, its Roman equivalent is:
+      - Roman equivalent of its place value, digit times
+ 
+        examples:
+        - digit = 3, its place value = 1000s,
+          Roman equivalent is 'M', 3 times = 'MMM'
+        
+        - digit = 2, its place value = 1s,
+          Roman Numeral equivalent is 'I', 2 times = 'II'
+        - digit = 1, its place value = 100s,
+          Roman Numeral equivalent is 'C', one time = 'C'
+    - if a digit is 4, or 9, its Roman equivalent is:
+      - Roman equivalent of its place value, 
+        prepended to Roman equivalent of (digit + 1) * place value
+       examples
+         4 
+           place value of 4 = 1 
+           Roman 1 = 'I' and (4 + 1) * 1 = V
+           4 = I prepended to V = IV 
             
-          400 
-            is in 100s place 
-            1 in 100s = C and  (4 + 1) in 100s = D
-            400 = C prepended to D = CD
-
-          9
-            is in ones place
-            1 in ones = I, and (9 + 1) in ones = 1 in tens = X
-            9 = I prepended to X = IX
-
-          90
-            is in tens place
-            1 in tens = X, and (9 + 1) in tens = 1 in 100s = C
-            90 = X prepended to C = IX
-
-    - if digit is between 6 and 8, their Roman equivalent 
-      Roman 5 prepended to Roman (digit - 5) in digits place value
-
-      - example
+         400 
+           place value of 4 = 100 
+           Roman 100 = 'C' and  (4 + 1) * 100 = 'D'
+           400 = 'C' prepended to 'D' = 'CD'
+         9
+           place value of 9 = 1
+           Roman 1 = 'I' and (9 + 1) * 1 = 10 = 'X'
+           9 = 'I' prepended to 'X' = 'IX'
+         90
+           place value of 9 = 10
+           Roman 10 = 'X' and (9 + 1) * 10 = 100 = 'C'
+           90 = 'X' prepended to 'C' = 'XC'
+  - if a digit is between 6 and 8, its Roman equivalent 
+      Roman 5 prepended to Roman (digit - 5), in digit's place value
+      example
           80
-            is in tens,
-            5 in tens = L, and (8 - 5) in tens = XXX
-            80 = L prepended to XXX = LXXX
-
+            place value of 8 = 10,
+            Roman 5 in 10s place value = 'L', 
+            Roman (8 - 5) in 10s place value  = 'XX
+            80 = 'L' prepended to 'XXX' = 'LXXX'
 output
-  - Roman numerals
-
+  - return Roman numeral equivalent of the input
 */
 
-/* Examples 
-
-The following examples were given with the problem as a test suite
-*
-/////////////////////////////
-
-/* I added the following examples to test overflow, according to this program (numbers above 3000), and  bad input handling */
 
 /* 
 DATA STRUCTURE 
@@ -157,34 +132,6 @@ ALGORITHM
 
 /* Code */
 
-/*
- var digit;
-  var idx = 0;
-  var rom_num = '';
-
-  while (number > 0) {
-    digit = number % 10;
-    number = parseInt(number / 10);
-    console.log(number);
-
-    rom_num = toRomNum(digit, 10**idx) + rom_num;
-    idx += 1;
-  }
-
-  function toRomNum(digit, place_value) {
-    if (digit === 0) {
-      return ''
-    } else if (digit < 4) {
-      return romanDictionary[place_value.toString()].repeat(digit);
-    } else if (digit === 4 || digit === 9) {
-      return romanDictionary[place_value.toString()] + romanDictionary[((digit + 1) *  place_value).toString()];;
-    } else {
-      return romanDictionary[(5 *place_value).toString()] + romanDictionary[place_value.toString()].repeat(digit - 5);;
-    }
-  }
-*/
-
-
 const RomanDictionary = {
   '1': 'I',
   '5': 'V',
@@ -231,6 +178,11 @@ function toRoman(num) {
   return digits.map(toRomanNumeral).join('');
 }
 
+/* Examples 
+
+The following examples were given with the problem as a test suite 
+*/
+
 console.log(toRoman(1)); // returns 'I' 
 
 console.log(toRoman(2)); // returns 'II' 
@@ -267,7 +219,9 @@ console.log(toRoman(1024)); // returns 'MXXIV'
 
 console.log(toRoman(3000)); // returns 'MMM'
 
-
+/*
+I copied some examples from test suite, and converted inputs into integer strings,
+*/
 
 console.log(toRoman('163')); // returns 'CLXIII'
 
@@ -281,6 +235,7 @@ console.log(toRoman('1024')); // returns 'MXXIV'
 
 console.log(toRoman('3000')); // returns 'MMM'
 
+// …and added a few bad inputs:-
 
 console.log(toRoman(3001)); // returns 'Invalid input'
 
@@ -301,4 +256,8 @@ console.log(toRoman('0000')); // returns 'Invalid input'
 console.log(toRoman('1,000')); // returns 'Invalid input'
 
 console.log(toRoman('2 9')); // returns 'Invalid input'
+
+console.log(toRoman(10.24)); // returns 'Invalid input'
+
+console.log(toRoman('10.24')); // returns 'Invalid input'
 
